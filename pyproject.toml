@@ -1,0 +1,14 @@
+[project]
+name = "xiaozhi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13.1"
+dependencies = [
+    "av>=17.0.1",
+    "opuslib>=3.0.1",
+    "pyogg>=0.6.14a1",
+    "requests>=2.34.2",
+    "soundfile>=0.13.1",
+    "websockets>=16.0",
+]
