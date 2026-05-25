@@ -1,0 +1,295 @@
+[
+    {
+        "id": "deaf1bea418eb951",
+        "type": "tab",
+        "label": "XiaoZhi.me",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "f1",
+        "type": "function",
+        "z": "deaf1bea418eb951",
+        "name": "Set OTA Payload",
+        "func": "//const MAC_ADDR = \"\nconst MAC_ADDR = msg.payload.mac;\n\nflow.set(\"mac\", MAC_ADDR);\n\nmsg.headers = {\n    'Device-Id': MAC_ADDR,\n    'Content-Type': 'application/json'\n};\n\nmsg.url = \"https://api.tenclass.net/xiaozhi/ota/\";\n\nmsg.payload = {\n    \"type\": \"hello\",\n    \"version\": 2,\n    \"transport\": \"http\",\n    \"flash_size\": 16777216,\n    \"minimum_free_heap_size\": 8318916,\n    \"mac_address\": MAC_ADDR,\n    \"chip_model_name\": \"esp32s3\",\n    \"chip_info\": {\n        \"model\": 9,\n        \"cores\": 2,\n        \"revision\": 2,\n        \"features\": 18\n    },\n    \"application\": {\n        \"name\": \"xiaozhi\",\n        \"version\": \"0.9.9\",\n        \"compile_time\": \"Jan 22 2025T20:40:23Z\",\n        \"idf_version\": \"v5.3.2-dirty\",\n        \"elf_sha256\": \"22986216df095587c42f8aeb06b239781c68ad8df80321e260556da7fcf5f522\"\n    },\n    \"partition_table\": [\n        { \"label\": \"nvs\", \"type\": 1, \"subtype\": 2, \"address\": 36864, \"size\": 16384 },\n        { \"label\": \"otadata\", \"type\": 1, \"subtype\": 0, \"address\": 53248, \"size\": 8192 },\n        { \"label\": \"phy_init\", \"type\": 1, \"subtype\": 1, \"address\": 61440, \"size\": 4096 },\n        { \"label\": \"model\", \"type\": 1, \"subtype\": 130, \"address\": 65536, \"size\": 983040 },\n        { \"label\": \"storage\", \"type\": 1, \"subtype\": 130, \"address\": 1048576, \"size\": 1048576 },\n        { \"label\": \"factory\", \"type\": 0, \"subtype\": 0, \"address\": 2097152, \"size\": 4194304 },\n        { \"label\": \"ota_0\", \"type\": 0, \"subtype\": 16, \"address\": 6291456, \"size\": 4194304 },\n        { \"label\": \"ota_1\", \"type\": 0, \"subtype\": 17, \"address\": 10485760, \"size\": 4194304 }\n    ],\n    \"ota\": { \"label\": \"factory\" },\n    \"board\": {\n        \"type\": \"bread-compact-wifi\",\n        \"ssid\": \"mycrib\",\n        \"rssi\": -58,\n        \"channel\": 6,\n        \"ip\": \"192.168.20.98\",\n        \"mac\": MAC_ADDR\n    }\n};\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 100,
+        "wires": [
+            [
+                "h1"
+            ]
+        ]
+    },
+    {
+        "id": "i1",
+        "type": "inject",
+        "z": "deaf1bea418eb951",
+        "name": "OTA Handshake",
+        "props": [
+            {
+                "p": "payload.mac",
+                "v": "xx:xx:xx:xx:xx:xx",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 140,
+        "y": 100,
+        "wires": [
+            [
+                "f1"
+            ]
+        ]
+    },
+    {
+        "id": "h1",
+        "type": "http request",
+        "z": "deaf1bea418eb951",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 150,
+        "y": 180,
+        "wires": [
+            [
+                "d1",
+                "1790f38a9e87396d"
+            ]
+        ]
+    },
+    {
+        "id": "d1",
+        "type": "debug",
+        "z": "deaf1bea418eb951",
+        "name": "Response",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "payload",
+        "statusType": "auto",
+        "x": 360,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "1790f38a9e87396d",
+        "type": "change",
+        "z": "deaf1bea418eb951",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "ota",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 250,
+        "y": 240,
+        "wires": [
+            [
+                "6de5fdd7a7e79662"
+            ]
+        ]
+    },
+    {
+        "id": "6a0014398ef5a313",
+        "type": "function",
+        "z": "deaf1bea418eb951",
+        "name": "function 2",
+        "func": "function generate_serial_number(mac) {\n    // 1. Clean the MAC address\n    const macClean = mac.replace(/:/g, \"\");\n\n    // 2. Generate MD5 hash and take first 8 characters\n    const shortHash = crypto\n        .createHash('md5')\n        .update(macClean)\n        .digest('hex')\n        .substring(0, 8)\n        .toUpperCase();\n\n    // 3. Return the formatted string\n    return `SN-${shortHash}-${macClean}`;\n}\n\nconst mac = flow.get('mac');\nconst serial_number = generate_serial_number(mac);\nconst ota = flow.get('ota');\nconst code = ota.activation.code;\nconst challenge = ota.activation.challenge;\nconst now = Math.floor(Date.now() / 1000);\nconst hmac_message = `xiaozhi-activation-${now}`;\n\n\nconst hash = crypto.createHash('sha256')\n    .update(hmac_message)\n    .digest('hex');\n\nconst { v4: uuidv4 } = uuid; \nconst device_id = mac;\nconst client_id = uuidv4();\nmsg.headers = {\n    'Content-Type': 'application/json',\n    'Activation-Version': '2',\n    'Device-Id': device_id,\n    'Client-Id': client_id,   \n};\n/* \n\n    \"code\": code,\n    \"challenge\": challenge,\n    \"now\": now,\n    \"hash\": hash,\n*/\nmsg.payload = {\n    \"Payload\": {\n        \"algorithm\": \"hmac-sha256\",\n        \"challenge\": challenge,\n        \"hmac\": hash,\n        \"serial_number\": serial_number,\n    },\n};\nmsg.requestTimeout = 3000;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "uuid",
+                "module": "uuid"
+            },
+            {
+                "var": "crypto",
+                "module": "crypto"
+            }
+        ],
+        "x": 200,
+        "y": 360,
+        "wires": [
+            [
+                "714ae5e60d4dd338",
+                "7b1803c7d1b427ae"
+            ]
+        ]
+    },
+    {
+        "id": "6de5fdd7a7e79662",
+        "type": "debug",
+        "z": "deaf1bea418eb951",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "714ae5e60d4dd338",
+        "type": "debug",
+        "z": "deaf1bea418eb951",
+        "name": "debug 4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "7b1803c7d1b427ae",
+        "type": "http request",
+        "z": "deaf1bea418eb951",
+        "name": "",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.tenclass.net/xiaozhi/ota/activate",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 330,
+        "y": 440,
+        "wires": [
+            [
+                "17f054ab79b7f67f"
+            ]
+        ]
+    },
+    {
+        "id": "17f054ab79b7f67f",
+        "type": "debug",
+        "z": "deaf1bea418eb951",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 440,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "e7a526b6500f1106",
+        "type": "inject",
+        "z": "deaf1bea418eb951",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "payload.mac",
+                "v": "mac",
+                "vt": "flow"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "ota",
+        "payloadType": "flow",
+        "x": 110,
+        "y": 300,
+        "wires": [
+            [
+                "e1fdf296eff762bc",
+                "6a0014398ef5a313",
+                "40d6d7fa0af3d5bc"
+            ]
+        ]
+    },
+    {
+        "id": "e1fdf296eff762bc",
+        "type": "debug",
+        "z": "deaf1bea418eb951",
+        "name": "debug 5",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "40d6d7fa0af3d5bc",
+        "type": "debug",
+        "z": "deaf1bea418eb951",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "\"Enter code in xiaozhi.me: \" & payload.activation.code",
+        "targetType": "jsonata",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 380,
+        "y": 340,
+        "wires": []
+    }
+]
