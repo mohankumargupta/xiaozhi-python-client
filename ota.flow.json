@@ -12,7 +12,7 @@
         "type": "function",
         "z": "deaf1bea418eb951",
         "name": "Set OTA Payload",
-        "func": "//const MAC_ADDR = \"\nconst MAC_ADDR = msg.payload.mac;\n\nflow.set(\"mac\", MAC_ADDR);\n\nmsg.headers = {\n    'Device-Id': MAC_ADDR,\n    'Content-Type': 'application/json'\n};\n\nmsg.url = \"https://api.tenclass.net/xiaozhi/ota/\";\n\nmsg.payload = {\n    \"type\": \"hello\",\n    \"version\": 2,\n    \"transport\": \"http\",\n    \"flash_size\": 16777216,\n    \"minimum_free_heap_size\": 8318916,\n    \"mac_address\": MAC_ADDR,\n    \"chip_model_name\": \"esp32s3\",\n    \"chip_info\": {\n        \"model\": 9,\n        \"cores\": 2,\n        \"revision\": 2,\n        \"features\": 18\n    },\n    \"application\": {\n        \"name\": \"xiaozhi\",\n        \"version\": \"0.9.9\",\n        \"compile_time\": \"Jan 22 2025T20:40:23Z\",\n        \"idf_version\": \"v5.3.2-dirty\",\n        \"elf_sha256\": \"22986216df095587c42f8aeb06b239781c68ad8df80321e260556da7fcf5f522\"\n    },\n    \"partition_table\": [\n        { \"label\": \"nvs\", \"type\": 1, \"subtype\": 2, \"address\": 36864, \"size\": 16384 },\n        { \"label\": \"otadata\", \"type\": 1, \"subtype\": 0, \"address\": 53248, \"size\": 8192 },\n        { \"label\": \"phy_init\", \"type\": 1, \"subtype\": 1, \"address\": 61440, \"size\": 4096 },\n        { \"label\": \"model\", \"type\": 1, \"subtype\": 130, \"address\": 65536, \"size\": 983040 },\n        { \"label\": \"storage\", \"type\": 1, \"subtype\": 130, \"address\": 1048576, \"size\": 1048576 },\n        { \"label\": \"factory\", \"type\": 0, \"subtype\": 0, \"address\": 2097152, \"size\": 4194304 },\n        { \"label\": \"ota_0\", \"type\": 0, \"subtype\": 16, \"address\": 6291456, \"size\": 4194304 },\n        { \"label\": \"ota_1\", \"type\": 0, \"subtype\": 17, \"address\": 10485760, \"size\": 4194304 }\n    ],\n    \"ota\": { \"label\": \"factory\" },\n    \"board\": {\n        \"type\": \"bread-compact-wifi\",\n        \"ssid\": \"mycrib\",\n        \"rssi\": -58,\n        \"channel\": 6,\n        \"ip\": \"192.168.20.98\",\n        \"mac\": MAC_ADDR\n    }\n};\n\nreturn msg;",
+        "func": "//const MAC_ADDR = \"dc:a6:32:bb:9b:ff\";\n\nconst MAC_ADDR = msg.payload.mac;\n\nflow.set(\"mac\", MAC_ADDR);\n\nmsg.headers = {\n    'Device-Id': MAC_ADDR,\n    'Content-Type': 'application/json'\n};\n\nmsg.url = \"https://api.tenclass.net/xiaozhi/ota/\";\n\nmsg.payload = {\n    \"type\": \"hello\",\n    \"version\": 2,\n    \"transport\": \"http\",\n    \"flash_size\": 16777216,\n    \"minimum_free_heap_size\": 8318916,\n    \"mac_address\": MAC_ADDR,\n    \"chip_model_name\": \"esp32s3\",\n    \"chip_info\": {\n        \"model\": 9,\n        \"cores\": 2,\n        \"revision\": 2,\n        \"features\": 18\n    },\n    \"application\": {\n        \"name\": \"xiaozhi\",\n        \"version\": \"0.9.9\",\n        \"compile_time\": \"Jan 22 2025T20:40:23Z\",\n        \"idf_version\": \"v5.3.2-dirty\",\n        \"elf_sha256\": \"22986216df095587c42f8aeb06b239781c68ad8df80321e260556da7fcf5f522\"\n    },\n    \"partition_table\": [\n        { \"label\": \"nvs\", \"type\": 1, \"subtype\": 2, \"address\": 36864, \"size\": 16384 },\n        { \"label\": \"otadata\", \"type\": 1, \"subtype\": 0, \"address\": 53248, \"size\": 8192 },\n        { \"label\": \"phy_init\", \"type\": 1, \"subtype\": 1, \"address\": 61440, \"size\": 4096 },\n        { \"label\": \"model\", \"type\": 1, \"subtype\": 130, \"address\": 65536, \"size\": 983040 },\n        { \"label\": \"storage\", \"type\": 1, \"subtype\": 130, \"address\": 1048576, \"size\": 1048576 },\n        { \"label\": \"factory\", \"type\": 0, \"subtype\": 0, \"address\": 2097152, \"size\": 4194304 },\n        { \"label\": \"ota_0\", \"type\": 0, \"subtype\": 16, \"address\": 6291456, \"size\": 4194304 },\n        { \"label\": \"ota_1\", \"type\": 0, \"subtype\": 17, \"address\": 10485760, \"size\": 4194304 }\n    ],\n    \"ota\": { \"label\": \"factory\" },\n    \"board\": {\n        \"type\": \"bread-compact-wifi\",\n        \"ssid\": \"mycrib\",\n        \"rssi\": -58,\n        \"channel\": 6,\n        \"ip\": \"192.168.20.98\",\n        \"mac\": MAC_ADDR\n    }\n};\n\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -35,7 +35,7 @@
         "props": [
             {
                 "p": "payload.mac",
-                "v": "xx:xx:xx:xx:xx:xx",
+                "v": "DC:A6:32:BB:9B:FF",
                 "vt": "str"
             }
         ],
@@ -290,6 +290,128 @@
         "statusType": "auto",
         "x": 380,
         "y": 340,
+        "wires": []
+    },
+    {
+        "id": "38a4e13457ef1161",
+        "type": "comment",
+        "z": "deaf1bea418eb951",
+        "name": "",
+        "info": "need to run flow.ota twice\n\nfirst time, grab the 6-digit code \nenter it at: xiaozhi.me\n\nthen second time, run it again,\nthe payload message should say: \n\n\"Device activated\"",
+        "x": 80,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "1bc5c086d3de7a8f",
+        "type": "inject",
+        "z": "deaf1bea418eb951",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "ota",
+        "payloadType": "flow",
+        "x": 90,
+        "y": 600,
+        "wires": [
+            [
+                "e97d6c6436371adc"
+            ]
+        ]
+    },
+    {
+        "id": "e97d6c6436371adc",
+        "type": "debug",
+        "z": "deaf1bea418eb951",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 360,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "0665e37a76b7942d",
+        "type": "mqtt in",
+        "z": "deaf1bea418eb951",
+        "name": "",
+        "topic": "",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 1,
+        "x": 250,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7d858d56aeeadbf8",
+        "type": "inject",
+        "z": "deaf1bea418eb951",
+        "name": "",
+        "props": [
+            {
+                "p": "action",
+                "v": "connect",
+                "vt": "str"
+            },
+            {
+                "p": "broker",
+                "v": "{\t    \"broker\": $lookup($lookup($flowContext(\"ota\"),\"mqtt\"), \"endpoint\"),\t    \"port\": \"8883\",\t    \"username\": $lookup($lookup($flowContext(\"ota\"),\"mqtt\"), \"username\"),\t    \"password\": $lookup($lookup($flowContext(\"ota\"),\"mqtt\"), \"password\")\t}",
+                "vt": "jsonata"
+            },
+            {
+                "p": "topic",
+                "v": "$lookup($lookup($flowContext(\"ota\"),\"mqtt\"), \"publish_topic\")",
+                "vt": "jsonata"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 70,
+        "y": 760,
+        "wires": [
+            [
+                "26df6d1e0bf8cc85"
+            ]
+        ]
+    },
+    {
+        "id": "26df6d1e0bf8cc85",
+        "type": "debug",
+        "z": "deaf1bea418eb951",
+        "name": "debug 9",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 760,
         "wires": []
     }
 ]
