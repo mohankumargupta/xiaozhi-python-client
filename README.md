@@ -10,3 +10,6 @@ ota.py to the initial 6-digit handshake with xiaozhi.me
 
 query3.py to send query and get response(both text and audio)
 
+query5.py sends query.pcm to xiaozhi.me
+
+ffmpeg -i query.wav -ar 16000 -ac 1 -f s16le query.pcm
