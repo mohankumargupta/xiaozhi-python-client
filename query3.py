@@ -7,6 +7,8 @@ from pathlib import Path
 import aiohttp
 import websockets
 import os
+import platform
+import subprocess
 
 
 # --- ADD THIS BLOCK TO FIX THE DLL ERROR ---
@@ -30,6 +32,22 @@ DUMP_FILE = "protocol_dump.log"
 # Initialize the dump file
 with open(DUMP_FILE, "w", encoding="utf-8") as f:
     f.write("=== PROTOCOL DUMP INITIATED ===\n")
+
+def play_audio_file(file_path):
+    """Plays a WAV file using standard tools based on the Operating System."""
+    system = platform.system()
+    try:
+        if system == "Windows":
+            import winsound
+            # Plays the sound synchronously (script waits for it to finish)
+            winsound.PlaySound(file_path, winsound.SND_FILENAME)
+        elif system == "Darwin": # macOS
+            subprocess.run(["afplay", file_path])
+        elif system == "Linux":
+            # aplay comes standard on most Linux systems (alsa-utils)
+            subprocess.run(["aplay", file_path])
+    except Exception as e:
+        print(f"Failed to play audio: {e}")
 
 # --- DUMP HELPERS (File only) ---
 def write_dump(text):
@@ -86,7 +104,7 @@ async def ws_recv(ws):
     msg = await ws.recv()
     lines = [
         "\n" + "-"*50,
-        f" <<< [WEBSOCKET RECV]"
+        " <<< [WEBSOCKET RECV]"
     ]
     if isinstance(msg, str):
         try:
@@ -130,7 +148,7 @@ async def main():
     # 0. Load credentials from files
     MAC_ADDRESS, CLIENT_ID, HMAC_KEY = load_credentials()
     
-    print(f"Loaded credentials from config files:")
+    print("Loaded credentials from config files:")
     print(f" - MAC: {MAC_ADDRESS}")
     print(f" - Client ID: {CLIENT_ID}")
     
@@ -275,7 +293,12 @@ async def main():
                             # CLEANUP: Close the WAV file when the assistant stops talking
                             wav_file.close()
                             print(f"Saved raw transactions to '{DUMP_FILE}'")
-                            print(f"Saved audio response to 'response.wav'")
+                            print("Saved audio response to 'response.wav'")
+                            
+                            # --- PLAY THE SOUND HERE ---
+                            print("\n[AUDIO] Playing response.wav...")
+                            play_audio_file("response.wav")
+
                             return
                         elif "text" in data:
                             # Streamed LLM response text
