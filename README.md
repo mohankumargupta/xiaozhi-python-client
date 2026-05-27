@@ -7,3 +7,4 @@ ota.py and hello-mqtt-tls.py work to some level, but not all the way.
 
 query.py works, but needs more testing
 
+need to copy libs folder from py-xiaozhi in order for opus.dll to be in the right place
